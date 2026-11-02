@@ -1,13 +1,32 @@
 import { pool } from '../database/connection.js';
+import { seedDefaultCategories } from '../database/defaultCategories.js';
 
 // Model que concentra as consultas SQL relacionadas aos usuarios.
 class Usuario {
   // Cria um usuario novo com nome, email e senha ja criptografada.
   static async create({ nome, email, senha }) {
-    const [result] = await pool.execute(
-      'INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)',
-      [nome, email, senha],
-    );
+    const connection = await pool.getConnection();
+
+    let result;
+    let transactionStarted = false;
+    try {
+      await connection.beginTransaction();
+      transactionStarted = true;
+      [result] = await connection.execute(
+        'INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)',
+        [nome, email, senha],
+      );
+      await seedDefaultCategories(connection, result.insertId);
+      await connection.commit();
+      transactionStarted = false;
+    } catch (error) {
+      if (transactionStarted) {
+        await connection.rollback();
+      }
+      throw error;
+    } finally {
+      connection.release();
+    }
 
     // Retorna apenas dados seguros, sem devolver a senha.
     return {

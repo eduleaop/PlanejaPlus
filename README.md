@@ -1,7 +1,6 @@
  # Planeja+
 
-**PASSO A PASSO PLANEJA MAIS
-**
+**PASSO A PASSO PLANEJA MAIS**
 
 1- ABRA O TERMINAL NO VSCODE
 
@@ -96,26 +95,26 @@ DB_PASSWORD=sua_senha
 DB_NAME=planeja_plus
 ```
 
-Crie o banco local (se ainda nao existir) e as tabelas. O schema nao apaga tabelas nem insere dados de exemplo:
+Crie o banco MySQL (se ainda nao existir):
 
 ```bash
 mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS planeja_plus"
-mysql -u root -p planeja_plus < database/schema.sql
 ```
 
-No Windows PowerShell, a importacao pode ser feita pelo `cmd`:
-
-```powershell
-cmd /c "mysql -u root -p planeja_plus < database\schema.sql"
-```
-
-`CREATE TABLE IF NOT EXISTS` protege tabelas existentes contra recriacao, mas nao atualiza estruturas antigas. Use migracoes versionadas para evoluir o schema e faça backup antes de qualquer alteracao estrutural.
-
-Inicie a API:
+Configure o `.env` com o banco e inicie a API. As migrations sao executadas automaticamente antes de o servidor aceitar requisicoes:
 
 ```bash
 npm run dev
 ```
+
+Para executar migrations ou reaplicar o seed manualmente:
+
+```bash
+npm run db:migrate
+npm run db:seed
+```
+
+As migrations versionadas ficam em `backend/database/migrations/` e sao registradas em `schema_migrations`. O seed cria categorias iniciais para contas existentes e nao duplica categorias com o mesmo nome e tipo. Novos cadastros tambem recebem suas categorias iniciais. Nenhum usuario, senha ou movimentacao de demonstracao e criado.
 
 No PowerShell, se houver bloqueio do `npm.ps1`, use:
 
@@ -157,10 +156,11 @@ http://localhost:5500
 ## Publicar a API
 
 - Configure no servico do backend `NODE_ENV=production`, `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD` e `DB_NAME` com as credenciais do MySQL privado do provedor. Nao exponha a porta do banco publicamente.
+- Para acessar os mesmos dados em varios dispositivos, publique a API e use um banco MySQL persistente compartilhado. O frontend em cada dispositivo deve apontar para essa mesma API; seed nao sincroniza bancos locais diferentes.
 - Configure um `JWT_SECRET` aleatorio com pelo menos 32 caracteres, `ALLOW_PUBLIC_REGISTRATION=false` e `FRONTEND_ORIGINS` com a origem HTTPS exata do frontend.
 - O cadastro retorna 403 por padrao em producao. Login e cadastro possuem limites de tentativas por IP.
 - Hospede o frontend por HTTPS e edite `frontend/js/api-config.js`: defina `API_BASE_URL` como a URL HTTPS da API terminada em `/api`.
-- O `schema.sql` somente cria tabelas ausentes e nao importa usuarios/categorias de exemplo. Nao o aplique sobre um banco sem backup.
+- Faca backup antes de atualizacoes de schema em producao; as migrations pendentes rodam automaticamente na inicializacao.
 
 ## Fluxo de uso
 
@@ -188,7 +188,7 @@ Para instrucoes passo a passo de teste e configuracao, consulte `GUIA_RECUPERACA
 Para um resumo geral das mudancas desde a exportacao PDF, consulte `GUIA_MUDANCAS_E_FUNCIONAMENTO.txt`.
 
 - A tabela `redefinicoes_senha` guarda somente o hash SHA-256 do token. Cada link e aleatorio, expira apos 60 minutos por padrao, so pode ser usado uma vez e e invalidado ao solicitar um link novo.
-- Para atualizar um banco existente, aplique `backend/database/schema.sql` novamente; a tabela nova e criada sem apagar os dados existentes.
+- Bancos existentes recebem as migrations pendentes automaticamente na inicializacao da API.
 - Em desenvolvimento, sem SMTP configurado, o link de redefinicao aparece no terminal da API. Sirva o frontend por HTTP (por exemplo, `python -m http.server 5500`) para abrir o link.
 - Para enviar email, configure no `backend/.env` `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS` e `MAIL_FROM`. Configure `FRONTEND_URL` como a URL publica do frontend.
 - `PASSWORD_RESET_EXPIRES_MINUTES` define a validade do link; o padrao e 60 minutos.
@@ -301,14 +301,12 @@ deixa de funcionar.
 ATUALIZAR O BANCO DE DADOS
 
 A recuperacao usa a tabela "redefinicoes_senha". Para criar essa tabela em um banco
-que ja existe, aplique novamente o arquivo backend\database\schema.sql. O script usa
-CREATE TABLE IF NOT EXISTS e nao apaga os dados existentes.
+que ja existe, as migrations pendentes rodam automaticamente quando a API inicia.
+Para executa-las manualmente, a partir da pasta backend rode:
 
-Se o cliente MySQL estiver no PATH do Windows, a partir da pasta backend execute:
+   npm run db:migrate
 
-   cmd /c "mysql -u root -p planeja_plus < database\schema.sql"
-
-O comando pedira a senha do MySQL. Faca backup antes de executar alteracoes no banco.
+Faca backup antes de atualizacoes de schema em producao.
 
 
 ENVIAR EMAIL DE VERDADE
@@ -337,7 +335,8 @@ SE ALGO NAO FUNCIONAR
 
 - Confira se a API continua rodando no terminal 1.
 - Confira se o frontend continua rodando no terminal 2 na porta 5500.
-- Se o backend indicar que a tabela redefinicoes_senha nao existe, aplique o schema.
+- Se o backend indicar que a tabela redefinicoes_senha nao existe, rode
+  "npm run db:migrate" na pasta backend.
 - Se o link nao chegar por email durante o desenvolvimento, procure-o no terminal da API.
 - Se o link expirou ou ja foi usado, solicite outro pela tela de login.
 - O sistema mostra a mesma resposta para email cadastrado e nao cadastrado, para nao
@@ -352,4 +351,4 @@ ARQUIVOS PRINCIPAIS
 - backend\controllers\authController.js: validacao e fluxo das rotas.
 - backend\models\RedefinicaoSenha.js: tokens de uso unico e atualizacao no banco.
 - backend\services\emailService.js: envio SMTP ou exibicao local do link.
-- backend\database\schema.sql: tabela de tokens de redefinicao.
+- backend\database\migrations\: criacao e atualizacao versionada das tabelas.

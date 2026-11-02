@@ -1,9 +1,9 @@
 import app from './app.js';
 import { env } from './config/env.js';
-import { ensureUsuarioAdminColumns } from './database/connection.js';
+import { runMigrations } from './database/migrationRunner.js';
 
 async function startServer() {
-  await ensureUsuarioAdminColumns();
+  await runMigrations();
 
   // Inicia o servidor na porta configurada no arquivo .env ou no valor padrao.
   app.listen(env.port, () => {
@@ -12,4 +12,7 @@ async function startServer() {
   });
 }
 
-startServer();
+startServer().catch((error) => {
+  console.error('Falha ao iniciar o servidor:', error);
+  process.exitCode = 1;
+});

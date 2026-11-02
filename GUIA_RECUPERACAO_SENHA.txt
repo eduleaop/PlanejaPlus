@@ -57,15 +57,13 @@ deixa de funcionar.
 
 ATUALIZAR O BANCO DE DADOS
 
-A recuperacao usa a tabela "redefinicoes_senha". Para criar essa tabela em um banco
-que ja existe, aplique novamente o arquivo backend\database\schema.sql. O script usa
-CREATE TABLE IF NOT EXISTS e nao apaga os dados existentes.
+A recuperacao usa a tabela "redefinicoes_senha". As migrations sao executadas
+automaticamente ao iniciar a API. Para executa-las manualmente, a partir da pasta
+backend rode:
 
-Se o cliente MySQL estiver no PATH do Windows, a partir da pasta backend execute:
+   npm run db:migrate
 
-   cmd /c "mysql -u root -p planeja_plus < database\schema.sql"
-
-O comando pedira a senha do MySQL. Faca backup antes de executar alteracoes no banco.
+Faca backup antes de atualizacoes de schema em producao.
 
 
 ENVIAR EMAIL DE VERDADE
