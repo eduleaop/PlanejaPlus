@@ -52,7 +52,7 @@ function renderMovimentacoes(movimentacoes) {
     const mensagem = movimentacoes.length
       ? 'Nenhuma movimentação encontrada para este filtro.'
       : 'Nenhuma movimentação cadastrada.';
-    movimentacoesLista.innerHTML = `<tr><td class="empty movement-empty" colspan="4">${mensagem}</td></tr>`;
+    movimentacoesLista.innerHTML = `<tr><td class="transactions-empty" colspan="5">${mensagem}</td></tr>`;
     return;
   }
 
@@ -60,17 +60,20 @@ function renderMovimentacoes(movimentacoes) {
     .map(
       (movimentacao) => `
         <tr class="movement-row">
-          <td>
-            <span class="movement-description">${window.AppUtils.escapeHtml(movimentacao.descricao)}</span>
-            <div class="movement-row-actions">
-              <button class="button secondary small" type="button" data-editar="${movimentacao.id}" aria-label="Editar movimentação">Editar</button>
-              <button class="button danger small" type="button" data-excluir="${movimentacao.id}" aria-label="Excluir movimentação">Excluir</button>
-            </div>
-          </td>
-          <td>${window.AppUtils.escapeHtml(movimentacao.categoria_nome)}</td>
-          <td>${window.AppUtils.formatDate(movimentacao.data_movimentacao)}</td>
-          <td class="movement-value ${movimentacao.tipo === 'receita' ? 'positive' : 'negative'}">
+          <td class="transaction-description">${window.AppUtils.escapeHtml(movimentacao.descricao)}</td>
+          <td class="transaction-category">${window.AppUtils.escapeHtml(movimentacao.categoria_nome)}</td>
+          <td class="transaction-date">${window.AppUtils.formatDate(movimentacao.data_movimentacao)}</td>
+          <td class="transaction-value ${movimentacao.tipo === 'receita' ? 'positive' : 'negative'}">
             ${window.AppUtils.formatCurrency(movimentacao.valor)}
+          </td>
+          <td class="transaction-actions">
+            <details class="row-actions">
+              <summary aria-label="Ações da movimentação">⋯</summary>
+              <div class="row-action-menu">
+                <button class="button secondary" type="button" data-editar="${movimentacao.id}">Editar</button>
+                <button class="button danger" type="button" data-excluir="${movimentacao.id}">Excluir</button>
+              </div>
+            </details>
           </td>
         </tr>
       `,

@@ -9,11 +9,11 @@
   <body class="dashboard-body">
     <!-- Cabecalho das paginas internas com link de logout. -->
     <header class="topbar">
-      <a class="brand" href="./index.html" aria-label="Planeja+">
+      <a class="brand" href="./index.html">
         <img src="./img/logo.png" alt="Planeja+" class="brand-logo" />
       </a>
       <nav class="nav">
-        <a href="./dashboard.html" aria-current="page">Dashboard</a>
+        <a href="./dashboard.html" data-auth-required aria-current="page">Dashboard</a>
         <a href="./movimentacoes.html">Movimentações</a>
         <a href="./categorias.html">Categorias</a>
         <a href="./relatorios.html">Relatórios</a>
@@ -28,6 +28,7 @@
       <!-- Titulo e descricao da tela. -->
       <section class="page-heading">
         <p class="eyebrow">Visão geral</p>
+        <!-- Saudacao personalizada preenchida pelo dashboard.js com o nome do usuario. -->
         <h1>Olá, <span id="usuario-nome">usuário</span></h1>
         <p class="muted">Resumo financeiro calculado a partir das movimentações cadastradas.</p>
       </section>
@@ -38,6 +39,7 @@
           <div class="stat-card-info">
             <p class="stat-label">Saldo atual</p>
             <strong id="saldo-atual">R$ 0,00</strong>
+            <!-- Barra de progresso preenchida pelo dashboard.js conforme o saldo. -->
             <div
               class="saldo-bar"
               role="progressbar"
@@ -48,8 +50,9 @@
             >
               <div id="saldo-bar-fill" class="saldo-bar-fill"></div>
             </div>
-            <p id="saldo-bar-texto" class="saldo-bar-texto">Aguardando movimentações</p>
+            <p id="saldo-bar-texto" class="saldo-bar-texto">Sobraram 0% das receitas do mês</p>
           </div>
+          <!-- Icone: circulo preto com $ branco -->
           <img class="stat-icon" src="./img/icon-saldo.png" alt="" aria-hidden="true" />
         </article>
 
@@ -58,6 +61,7 @@
             <p class="stat-label">Receitas totais</p>
             <strong id="receitas-totais" class="positive">R$ 0,00</strong>
           </div>
+          <!-- Icone: circulo verde com $ branco e seta para cima -->
           <img class="stat-icon" src="./img/icon-receita.png" alt="" aria-hidden="true" />
         </article>
 
@@ -66,6 +70,7 @@
             <p class="stat-label">Despesas totais</p>
             <strong id="despesas-totais" class="negative">R$ 0,00</strong>
           </div>
+          <!-- Icone: circulo vermelho com $ branco e seta para baixo -->
           <img class="stat-icon" src="./img/icon-despesa.png" alt="" aria-hidden="true" />
         </article>
       </section>
@@ -97,6 +102,7 @@
         </article>
       </section>
 
+      <!-- Ultimas movimentacoes do mes atual, preenchidas pelo dashboard.js. -->
       <section class="panel ultimas-section">
         <div class="panel-heading ultimas-heading">
           <h2>Últimas movimentações</h2>

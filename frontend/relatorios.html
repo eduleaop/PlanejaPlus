@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Relatórios | Planeja+</title>
+    <title>Relatorios | Planeja+</title>
     <link rel="stylesheet" href="./css/styles.css" />
   </head>
-  <body class="app-page reports-page">
+  <body class="reports-body">
     <!-- Cabecalho das paginas internas com link para sair. -->
     <header class="topbar">
-      <a class="brand" href="./index.html" aria-label="Planeja+">
+      <a class="brand" href="./index.html">
         <img src="./img/logo.png" alt="Planeja+" class="brand-logo" />
       </a>
       <nav class="nav">
@@ -24,17 +24,17 @@
     </header>
 
     <!-- Conteudo principal de filtros, resumo e tabela do relatorio. -->
-    <main class="container">
+    <main class="reports-page">
       <!-- Titulo e descricao da pagina de relatorios. -->
-      <section class="page-heading">
+      <section class="page-heading reports-heading">
         <p class="eyebrow">Análise</p>
         <h1>Relatórios</h1>
-        <p class="muted">Filtre as movimentações por período e exporte o resumo em PDF ou Excel.</p>
+        <p class="muted">Filtre as movimentações por período e exporte o resumo em PDF.</p>
       </section>
 
       <!-- Formulario de filtros usado pelo relatorios.js. -->
-      <section class="panel">
-        <form class="filters">
+      <section class="panel reports-filter-panel">
+        <form class="filters reports-filters">
           <label>
             Data inicial
             <input id="periodo-inicio" type="date" />
@@ -54,60 +54,48 @@
             </select>
           </label>
 
-          <button class="button primary report-action" type="submit">
-            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
-              <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 17v3h14v-3" />
-            </svg>
+          <button class="button primary" type="submit">
+            <svg aria-hidden="true" viewBox="0 0 16 16"><path d="M8 1.5v8m0 0 3-3m-3 3-3-3M2.5 10.5v3h11v-3" /></svg>
             Gerar relatório
           </button>
-          <button id="exportar-pdf" class="button secondary report-action" type="button">
-            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
-              <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 17v3h14v-3" />
-            </svg>
+          <button id="exportar-pdf" class="button secondary" type="button">
+            <svg aria-hidden="true" viewBox="0 0 16 16"><path d="M8 2v8m0 0 3-3m-3 3-3-3M2.5 10.5v3h11v-3" /></svg>
             Exportar PDF
           </button>
-          <button id="exportar-excel" class="button secondary report-action" type="button">
-            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
-              <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 17v3h14v-3" />
-            </svg>
+          <button id="exportar-excel" class="button secondary" type="button">
+            <svg aria-hidden="true" viewBox="0 0 16 16"><path d="M8 2v8m0 0 3-3m-3 3-3-3M2.5 10.5v3h11v-3" /></svg>
             Exportar Excel
           </button>
         </form>
       </section>
 
       <!-- Cards de totais atualizados conforme o filtro do relatorio. -->
-      <section class="stats-grid report-stats">
-        <article class="stat-card report-stat-card report-stat-card--income">
-          <span class="report-stat-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="m4 16 6-6 4 4 6-8M14 6h6v6" />
-            </svg>
+      <section class="stats-grid reports-stats">
+        <article class="stat-card reports-stat-card">
+          <span class="reports-stat-icon reports-stat-icon--income" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="m4 16 6-6 4 4 6-7M14 7h6v6" /></svg>
           </span>
-          <div>
+          <div class="reports-stat-info">
             <p class="stat-label">Total de receitas</p>
             <strong id="relatorio-receitas" class="positive">R$ 0,00</strong>
           </div>
         </article>
 
-        <article class="stat-card report-stat-card report-stat-card--expenses">
-          <span class="report-stat-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="m4 8 6 6 4-4 6 8m-6 0h6v-6" />
-            </svg>
+        <article class="stat-card reports-stat-card">
+          <span class="reports-stat-icon reports-stat-icon--expense" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="m4 8 6 6 4-4 6 7m-6 0h6v-6" /></svg>
           </span>
-          <div>
+          <div class="reports-stat-info">
             <p class="stat-label">Total de despesas</p>
             <strong id="relatorio-despesas" class="negative">R$ 0,00</strong>
           </div>
         </article>
 
-        <article class="stat-card report-stat-card report-stat-card--balance">
-          <span class="report-stat-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M5 12h14" />
-            </svg>
+        <article class="stat-card reports-stat-card">
+          <span class="reports-stat-icon reports-stat-icon--balance" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M5 8h14M5 16h14" /></svg>
           </span>
-          <div>
+          <div class="reports-stat-info">
             <p class="stat-label">Resultado</p>
             <strong id="relatorio-saldo">R$ 0,00</strong>
           </div>
@@ -115,11 +103,11 @@
       </section>
 
       <!-- Tabela de detalhamento agrupado por categoria e tipo. -->
-      <section class="panel">
+      <section class="panel reports-detail-panel">
         <h2>Detalhamento</h2>
         <p id="message" class="message" role="status"></p>
         <div class="table-wrap">
-          <table>
+          <table class="reports-table">
             <thead>
               <tr>
                 <th>Categoria</th>
@@ -134,7 +122,6 @@
       </section>
     </main>
     <!-- Bibliotecas externas e scripts locais usados no relatorio. -->
-    <!-- Foi utilizada a biblioteca jsPDF para geração do documento PDF. -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>

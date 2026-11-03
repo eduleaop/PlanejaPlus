@@ -2,6 +2,9 @@
 let graficoCategorias = null;
 let graficoMensal = null;
 
+Chart.defaults.font.size =
+  Number.parseFloat(getComputedStyle(document.documentElement).fontSize) * 0.75;
+
 // Calcula totais de receitas, despesas e saldo a partir das movimentacoes.
 function calcularResumo(movimentacoes) {
   const receitas = movimentacoes

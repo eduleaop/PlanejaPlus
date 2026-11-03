@@ -7,7 +7,7 @@ if (authWrapper && !reducedMotion) {
   initRibbonGlow(authWrapper, {
     background: '#f7f8ff',
     color1: '#ffffff',
-    color2: '#5667d9',
+    color2: '#0010FF',
     size: 134,
     speed: 50,
     angle: -180,

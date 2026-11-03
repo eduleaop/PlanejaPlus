@@ -6,16 +6,16 @@
     <title>Categorias | Planeja+</title>
     <link rel="stylesheet" href="./css/styles.css" />
   </head>
-  <body class="app-page">
+  <body class="categories-body">
     <!-- Cabecalho das paginas autenticadas. -->
     <header class="topbar">
-      <a class="brand" href="./index.html" aria-label="Planeja+">
+      <a class="brand" href="./index.html">
         <img src="./img/logo.png" alt="Planeja+" class="brand-logo" />
       </a>
       <nav class="nav">
         <a href="./dashboard.html">Dashboard</a>
-        <a href="./categorias.html" aria-current="page">Categorias</a>
         <a href="./movimentacoes.html">Movimentações</a>
+        <a href="./categorias.html" aria-current="page">Categorias</a>
         <a href="./relatorios.html">Relatórios</a>
         <a href="./faq.html">FAQ</a>
         <a href="./admin.html" data-admin-link>Admin</a>
@@ -24,16 +24,13 @@
     </header>
 
     <!-- Grid com formulario de criacao e lista de categorias. -->
-    <main class="container management-page categories-page">
-      <section class="page-heading management-heading">
-        <p class="eyebrow">Categorias</p>
-        <h1>Minhas categorias</h1>
-      </section>
-
-      <section class="panel management-form-panel">
-        <h2>Categorias</h2>
+    <main class="container grid categories-page">
+      <!-- Painel usado para cadastrar novas categorias. -->
+      <section class="panel categories-form-panel">
+        <h1>Categorias</h1>
         <p class="muted">Cadastre categorias de receita ou despesa.</p>
 
+        <!-- Formulario lido pelo categorias.js. -->
         <form id="categoria-form" class="form">
           <label>
             Nome
@@ -48,7 +45,7 @@
             </select>
           </label>
 
-          <button class="button primary full category-create-button" type="submit">
+          <button class="button primary full" type="submit">
             <span aria-hidden="true">+</span>
             Criar categoria
           </button>
@@ -56,8 +53,15 @@
         </form>
       </section>
 
-      <section class="panel management-list-panel">
-        <div id="categorias-lista" class="list"></div>
+      <section class="categories-list-section" aria-labelledby="categories-list-title">
+        <header class="categories-list-heading">
+          <p class="categories-eyebrow">Categorias</p>
+          <h2 id="categories-list-title">Minhas categorias</h2>
+        </header>
+        <!-- Painel que recebe a lista renderizada pelo JavaScript. -->
+        <div class="panel categories-list-panel">
+          <div id="categorias-lista" class="list"></div>
+        </div>
       </section>
     </main>
     <!-- Dependencias e scripts da pagina de categorias. -->

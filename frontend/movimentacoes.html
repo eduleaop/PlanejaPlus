@@ -1,21 +1,21 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="transactions-document">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Movimentações | Planeja+</title>
+    <title>Movimentacoes | Planeja+</title>
     <link rel="stylesheet" href="./css/styles.css" />
   </head>
-  <body class="app-page">
+  <body class="transactions-body">
     <!-- Cabecalho das paginas internas com navegacao entre modulos. -->
     <header class="topbar">
-      <a class="brand" href="./index.html" aria-label="Planeja+">
+      <a class="brand" href="./index.html">
         <img src="./img/logo.png" alt="Planeja+" class="brand-logo" />
       </a>
       <nav class="nav">
         <a href="./dashboard.html">Dashboard</a>
-        <a href="./categorias.html">Categorias</a>
         <a href="./movimentacoes.html" aria-current="page">Movimentações</a>
+        <a href="./categorias.html">Categorias</a>
         <a href="./relatorios.html">Relatórios</a>
         <a href="./faq.html">FAQ</a>
         <a href="./admin.html" data-admin-link>Admin</a>
@@ -23,17 +23,45 @@
       </nav>
     </header>
 
-    <!-- Grid principal com formulario e lista de movimentacoes. -->
-    <main class="container management-page movements-page">
-      <section class="page-heading management-heading">
-        <p id="mes-atual" class="eyebrow">Movimentações</p>
-        <h1>Movimentações</h1>
+    <main class="transactions-page transactions-layout">
+      <section class="transactions-main">
+        <header class="transactions-heading">
+          <p id="mes-atual" class="transactions-month"></p>
+          <h1>Movimentações</h1>
+        </header>
+
+        <section class="panel transactions-panel" aria-label="Lista de movimentações">
+          <div class="transactions-toolbar">
+            <label class="transaction-search movement-search">
+              <span class="visually-hidden">Buscar por descrição</span>
+              <input id="buscar-movimentacoes" type="search" placeholder="Buscar por descrição" />
+            </label>
+            <div class="transaction-filters movement-filters" role="group" aria-label="Filtrar movimentações">
+              <button class="transaction-filter movement-filter is-active" type="button" data-filtro="todas" aria-pressed="true">Todas</button>
+              <button class="transaction-filter movement-filter" type="button" data-filtro="receita" aria-pressed="false">Entradas</button>
+              <button class="transaction-filter movement-filter" type="button" data-filtro="despesa" aria-pressed="false">Saídas</button>
+            </div>
+          </div>
+          <div class="table-wrap transactions-table-wrap">
+            <table class="transactions-table">
+              <thead>
+                <tr>
+                  <th scope="col">Descrição</th>
+                  <th scope="col">Categoria</th>
+                  <th scope="col">Data</th>
+                  <th scope="col" class="col-value">Valor</th>
+                  <th scope="col"><span class="visually-hidden">Ações</span></th>
+                </tr>
+              </thead>
+              <tbody id="movimentacoes-lista"></tbody>
+            </table>
+          </div>
+        </section>
       </section>
 
-      <section class="panel management-form-panel">
+      <aside class="transaction-form-panel panel">
         <h2>Nova movimentação</h2>
-
-        <form id="movimentacao-form" class="form movement-form">
+        <form id="movimentacao-form" class="form">
           <input name="id" type="hidden" />
 
           <label>
@@ -67,44 +95,12 @@
           </label>
 
           <div class="actions compact">
-            <button class="button primary" type="submit">Salvar movimentação</button>
+            <button class="button primary" type="submit">Salvar</button>
             <button id="cancelar-edicao" class="button secondary" type="button">Limpar</button>
           </div>
           <p id="message" class="message" role="status"></p>
         </form>
-      </section>
-
-      <section class="panel management-list-panel movements-list-panel">
-        <div class="movement-toolbar">
-          <label class="movement-search">
-            <span class="sr-only">Buscar movimentações por descrição</span>
-            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
-              <circle cx="10.8" cy="10.8" r="6.3"></circle>
-              <path d="m15.5 15.5 4.2 4.2"></path>
-            </svg>
-            <input id="buscar-movimentacoes" type="search" placeholder="Buscar por descrição" />
-          </label>
-          <div class="movement-filters" role="group" aria-label="Filtrar movimentações">
-            <button class="movement-filter is-active" type="button" data-filtro="todas" aria-pressed="true">Todas</button>
-            <button class="movement-filter" type="button" data-filtro="receita" aria-pressed="false">Entradas</button>
-            <button class="movement-filter" type="button" data-filtro="despesa" aria-pressed="false">Saídas</button>
-          </div>
-        </div>
-
-        <div class="table-wrap movement-table-wrap">
-          <table class="movement-table">
-            <thead>
-              <tr>
-                <th>Descrição</th>
-                <th>Categoria</th>
-                <th>Data</th>
-                <th class="movement-value-heading">Valor</th>
-              </tr>
-            </thead>
-            <tbody id="movimentacoes-lista"></tbody>
-          </table>
-        </div>
-      </section>
+      </aside>
     </main>
     <!-- Dependencias e scripts da tela de movimentacoes. -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

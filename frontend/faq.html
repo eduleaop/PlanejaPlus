@@ -6,7 +6,7 @@
     <title>Perguntas frequentes | Planeja+</title>
     <link rel="stylesheet" href="./css/styles.css" />
   </head>
-  <body class="app-page">
+  <body class="faq-body">
     <header class="topbar">
       <a class="brand" href="./index.html" aria-label="Planeja+">
         <img src="./img/logo.png" alt="Planeja+" class="brand-logo" />
@@ -17,7 +17,9 @@
         <a href="./categorias.html" data-auth-required>Categorias</a>
         <a href="./relatorios.html" data-auth-required>Relatórios</a>
         <a href="./faq.html" aria-current="page">FAQ</a>
-        <a href="./login.html">Login</a>
+        <a href="./admin.html" data-admin-link hidden>Admin</a>
+        <a href="./login.html" data-guest-link>Login</a>
+        <a href="./login.html" data-logout hidden>Sair</a>
       </nav>
     </header>
 
@@ -31,45 +33,150 @@
       <section class="faq-list" aria-label="Perguntas e respostas">
         <details class="panel faq-item">
           <summary>Como começo a usar o Planeja+?</summary>
-          <p>Crie uma conta ou entre com seu email e senha. Depois, cadastre suas categorias e registre suas movimentações financeiras.</p>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>Crie uma conta ou entre com seu email e senha. Depois, cadastre suas categorias e registre suas movimentações financeiras.</p>
+            </div>
+          </div>
         </details>
 
         <details class="panel faq-item">
           <summary>Para que servem as categorias?</summary>
-          <p>As categorias organizam suas receitas e despesas, por exemplo, vendas, alimentação ou transporte. Escolha se cada categoria será de receita ou despesa.</p>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>As categorias organizam suas receitas e despesas, por exemplo, vendas, alimentação ou transporte. Escolha se cada categoria será de receita ou despesa.</p>
+            </div>
+          </div>
         </details>
 
         <details class="panel faq-item">
           <summary>Como cadastro uma receita ou despesa?</summary>
-          <p>Abra Movimentações, selecione uma categoria, informe a descrição, o valor, o tipo e a data e clique em Salvar. Você também pode editar ou excluir movimentações existentes.</p>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>Abra Movimentações, selecione uma categoria, informe a descrição, o valor, o tipo e a data e clique em Salvar. Você também pode editar ou excluir movimentações existentes.</p>
+            </div>
+          </div>
         </details>
 
         <details class="panel faq-item">
           <summary>O que aparece no dashboard?</summary>
-          <p>O dashboard apresenta um resumo das receitas, despesas e saldo calculados com base nas movimentações cadastradas.</p>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>O dashboard apresenta um resumo das receitas, despesas e saldo calculados com base nas movimentações cadastradas.</p>
+            </div>
+          </div>
         </details>
 
         <details class="panel faq-item">
           <summary>Como filtro um relatório?</summary>
-          <p>Em Relatórios, selecione as datas inicial e final e, se desejar, filtre por receitas ou despesas. Clique em Gerar relatório para atualizar o resumo e o detalhamento.</p>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>Em Relatórios, selecione as datas inicial e final e, se desejar, filtre por receitas ou despesas. Clique em Gerar relatório para atualizar o resumo e o detalhamento.</p>
+            </div>
+          </div>
         </details>
 
         <details class="panel faq-item">
           <summary>Como exporto meus dados?</summary>
-          <p>Na página Relatórios, use Exportar PDF para gerar um resumo em PDF ou Exportar Excel para baixar uma planilha com os dados agrupados por categoria e tipo. As exportações respeitam os filtros selecionados.</p>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>Na página Relatórios, use Exportar PDF para gerar um resumo em PDF ou Exportar Excel para baixar uma planilha com os dados agrupados por categoria e tipo. As exportações respeitam os filtros selecionados.</p>
+            </div>
+          </div>
         </details>
 
         <details class="panel faq-item">
           <summary>Esqueci minha senha. Como faço para recuperá-la?</summary>
-          <p>Na tela de login, selecione Esqueci minha senha e informe seu email. Se ele estiver cadastrado, você receberá um link válido por tempo limitado para criar uma nova senha.</p>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>Na tela de login, selecione Esqueci minha senha e informe seu email. Se ele estiver cadastrado, você receberá um link válido por tempo limitado para criar uma nova senha.</p>
+            </div>
+          </div>
         </details>
 
         <details class="panel faq-item">
           <summary>O que fazer se os dados não carregarem?</summary>
-          <p>Verifique se você está conectado à sua conta e se a API do Planeja+ está disponível. Se o problema continuar, atualize a página e tente novamente.</p>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>Verifique se você está conectado à sua conta e se a API do Planeja+ está disponível. Se o problema continuar, atualize a página e tente novamente.</p>
+            </div>
+          </div>
         </details>
       </section>
     </main>
     <script src="./js/appUtils.js"></script>
+    <script>
+      window.AppUtils.setupAdminLink();
+      window.AppUtils.setupLogout();
+
+      const isAuthenticated = Boolean(localStorage.getItem('planeja_token'));
+      document.querySelector('[data-guest-link]').hidden = isAuthenticated;
+      document.querySelector('[data-logout]').hidden = !isAuthenticated;
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      document.querySelectorAll('.faq-item').forEach((item) => {
+        const summary = item.querySelector('summary');
+        const answer = item.querySelector('.faq-answer');
+        let animation;
+        let isClosing = false;
+
+        summary.addEventListener('click', (event) => {
+          event.preventDefault();
+          animation?.cancel();
+          animation = null;
+
+          const shouldOpen = !item.open || isClosing;
+          isClosing = false;
+
+          if (shouldOpen) {
+            item.open = true;
+
+            if (reduceMotion.matches) {
+              return;
+            }
+
+            animation = answer.animate(
+              [
+                { height: '0px', opacity: 0, transform: 'translateY(-6px)' },
+                {
+                  height: `${answer.scrollHeight}px`,
+                  opacity: 1,
+                  transform: 'translateY(0)',
+                },
+              ],
+              { duration: 300, easing: 'ease-out' },
+            );
+            animation.onfinish = () => {
+              animation = null;
+            };
+            return;
+          }
+
+          if (reduceMotion.matches) {
+            item.open = false;
+            return;
+          }
+
+          isClosing = true;
+          animation = answer.animate(
+            [
+              {
+                height: `${answer.getBoundingClientRect().height}px`,
+                opacity: 1,
+                transform: 'translateY(0)',
+              },
+              { height: '0px', opacity: 0, transform: 'translateY(-6px)' },
+            ],
+            { duration: 250, easing: 'ease-in' },
+          );
+          animation.onfinish = () => {
+            item.open = false;
+            isClosing = false;
+            animation = null;
+          };
+        });
+      });
+    </script>
   </body>
 </html>

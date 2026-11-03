@@ -6,38 +6,44 @@
     <title>Esqueci minha senha | Planeja+</title>
     <link rel="stylesheet" href="./css/styles.css" />
   </head>
-  <body class="app-page auth-page">
+  <body>
     <header class="topbar">
-      <a class="brand" href="./index.html" aria-label="Planeja+">
+      <a class="brand" href="./index.html">
         <img src="./img/logo.png" alt="Planeja+" class="brand-logo" />
       </a>
       <nav class="nav">
-        <a href="./login.html">Login</a>
+        <a href="./dashboard.html" data-auth-required>Dashboard</a>
         <a href="./cadastro.html" data-public-registration>Cadastro</a>
+        <a href="./login.html">Login</a>
         <a href="./faq.html">FAQ</a>
       </nav>
     </header>
 
-    <div id="auth-bg-field" class="hero-wrapper auth-wrapper">
-      <main class="container narrow auth-container">
-        <section class="panel">
-          <h1 class="auth-title">Esqueci minha senha</h1>
-          <p class="muted auth-description">Informe seu email para receber um link de redefinição.</p>
+    <main id="auth-bg-field" class="auth-page hero-wrapper">
+      <section class="form-container" aria-labelledby="forgot-password-title">
+        <p id="forgot-password-title" class="login-title">Esqueci minha senha</p>
+        <p class="login-sub-title">Informe seu email para receber um link de redefinição.</p>
 
-          <form id="esqueci-form" class="form auth-form">
-            <label>
-              <span class="sr-only">Email</span>
-              <input name="email" type="email" placeholder="Email" required autocomplete="email" />
-            </label>
+        <form id="esqueci-form" class="login-fields">
+          <input
+            class="login-input"
+            name="email"
+            type="email"
+            placeholder="Email"
+            aria-label="Email"
+            required
+            autocomplete="email"
+          />
 
-            <button class="button primary full" type="submit">Enviar link de recuperação</button>
-            <p id="message" class="message" role="status"></p>
-          </form>
+          <p id="message" class="login-message" role="status" aria-live="polite"></p>
+          <button class="form-btn" type="submit">Enviar link de recuperação</button>
+        </form>
 
-          <p class="muted"><a class="text-link" href="./login.html">Voltar para o login</a></p>
-        </section>
-      </main>
-    </div>
+        <p class="sign-up-label">
+          <a class="sign-up-link" href="./login.html">Voltar para o login</a>
+        </p>
+      </section>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./js/api-config.js"></script>

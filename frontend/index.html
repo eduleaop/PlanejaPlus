@@ -22,26 +22,31 @@
       </nav>
     </header>
 
+    <!-- Conteudo inicial com o efeito interativo Cursor Ring Field ao fundo. -->
     <div id="hero-bg-field" class="hero-wrapper">
       <main class="container hero">
+        <!-- Bloco de chamada principal da pagina inicial. -->
         <section class="hero-content">
-          <p class="eyebrow">Controle financeiro para microempreendedores individuais</p>
-          <h1>Planeje suas finanças com uma interface clara e objetiva.</h1>
-          <p class="hero-description">O que determina seu futuro como empreendedor começa por aqui.</p>
+          <p class="eyebrow">Controle financeiro para Microempreendedores individuais</p>
+          <h1>Planeje suas finanças com uma<br class="hero-title-break"> interface clara e objetiva.</h1>
+          <p class="hero-description">
+            O que determina seu futuro como empreendedor<br>começa por aqui.
+          </p>
           <div class="actions">
             <a class="button primary" href="./dashboard.html" data-auth-required>Ver dashboard</a>
             <a class="button secondary" href="./cadastro.html" data-public-registration>Criar conta</a>
           </div>
         </section>
 
-        <div class="stack" aria-label="Etapas do Planeja+">
+        <!-- Card empilhado animado com as etapas do Planeja+ (From Uiverse.io by janisar-hyder) -->
+        <div class="stack">
           <div class="card">
             <div class="image">
               <h2>Planeja+</h2>
               <ol class="steps">
-                <li><span>1</span>Organização</li>
-                <li><span>2</span>Planejamento</li>
-                <li><span>3</span>Exportação</li>
+                <li><span>1</span> Organização</li>
+                <li><span>2</span> Planejamento</li>
+                <li><span>3</span> Exportação</li>
               </ol>
             </div>
           </div>
@@ -55,17 +60,16 @@
 
       const heroWrapper = document.getElementById('hero-bg-field');
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
       if (heroWrapper && !reducedMotion) {
         initRibbonGlow(heroWrapper, {
-          background: '#f7f8ff',
-          color1: '#ffffff',
-          color2: '#5667d9',
+          background: "#FFFFFF",
+          color1: "#FFFFFF",
+          color2: "#0010FF",
           size: 134,
           speed: 50,
           angle: -180,
           hover: 100,
-          reach: 240,
+          reach: 240
         });
       }
     </script>
