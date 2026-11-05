@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&display=swap');
 
 :root {
-  font-size: clamp(16px, calc(15px + 0.18vw), 18px);
+  font-size: clamp(16px, calc(15px + 0.2vw), 20px);
 
   /* Variaveis globais para reaproveitar cores, sombra e superficies no projeto. */
   --bg: #f5f4f9;
@@ -11,6 +11,7 @@
   --line: rgba(128, 137, 153, 0.22);
   --primary: #5667d9;
   --primary-dark: #3f58d4;
+  --accent-blue: #5e79e8;
   --danger: #dc2626;
   --success: #15803d;
   --shadow: 0 10px 30px rgba(31, 41, 55, 0.08);
@@ -1488,8 +1489,8 @@ th {
 }
 
 .transactions-table {
-  min-width: 640px;
-  table-layout: auto;
+  min-width: 560px;
+  table-layout: fixed;
 }
 
 .transactions-table th,
@@ -1516,20 +1517,28 @@ th {
 }
 
 .transaction-description {
-  min-width: 170px;
+  display: block;
+  min-width: 0;
+  overflow-wrap: anywhere;
   color: #172033;
   font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: -0.01em;
 }
 
+.transaction-description-cell {
+  width: 42%;
+}
+
 .transaction-category {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
+  margin-top: 5px;
   color: var(--muted);
-  font-size: 0.85rem;
-  white-space: nowrap;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
 }
 
 .category-dot {
@@ -1549,7 +1558,7 @@ th {
 }
 
 .category-color-3 .category-dot {
-  background: #7c3aed;
+  background: var(--accent-blue);
 }
 
 .transaction-date {
@@ -1583,6 +1592,15 @@ th {
 .row-actions {
   position: relative;
   display: inline-block;
+}
+
+.row-actions[open] {
+  z-index: 10;
+}
+
+.transactions-table tbody tr:last-child .row-action-menu {
+  top: auto;
+  bottom: calc(100% + 4px);
 }
 
 .row-actions summary {
@@ -1801,7 +1819,7 @@ th {
 
 .reports-heading .eyebrow {
   margin: 0 0 6px;
-  color: #5e79e8;
+  color: var(--accent-blue);
   font-size: 0.82rem;
   font-weight: 800;
   letter-spacing: 0.14em;
@@ -2167,12 +2185,16 @@ th {
 
 .categories-page .categories-list-panel {
   min-height: 580px;
+  height: 580px;
   padding: 40px 42px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
 }
 
 .categories-eyebrow {
   margin: 0 0 2px;
-  color: #7185f5;
+  color: var(--accent-blue);
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.1em;
@@ -2289,6 +2311,10 @@ th {
   .categories-page .categories-list-panel {
     min-height: 0;
     padding: 28px;
+  }
+
+  .categories-page .categories-list-panel {
+    height: 420px;
   }
 
   .categories-page .categories-form-panel h1 {
@@ -2456,7 +2482,7 @@ th {
 
 .transactions-month {
   margin: 0 0 7px;
-  color: #5e79e8;
+  color: var(--accent-blue);
   font-size: 0.95rem;
   font-weight: 800;
   letter-spacing: 0.1em;
@@ -2523,7 +2549,7 @@ th {
 }
 
 .transactions-layout .transactions-table {
-  min-width: 740px;
+  min-width: 560px;
 }
 
 .transactions-layout .transactions-table th,
@@ -2540,16 +2566,19 @@ th {
 }
 
 .transactions-layout .transaction-description {
-  min-width: 170px;
   color: #293653;
   font-size: 0.96rem;
   font-weight: 800;
 }
 
+.transactions-layout .transaction-description-cell {
+  width: 42%;
+}
+
 .transactions-layout .transaction-category {
   gap: 9px;
   color: #7888a8;
-  font-size: 0.94rem;
+  font-size: 0.82rem;
 }
 
 .transactions-layout .category-dot {

@@ -24,6 +24,7 @@ uniform vec2 uMouse;
 uniform float uOn;
 uniform float uReach;
 uniform vec2 uVel;
+uniform float uIntensity;
 out vec4 o;
 
 const float TAU = 6.28318530718;
@@ -75,7 +76,7 @@ void main() {
     float k = sin(i * CYCLE + t * 1.2 + r * HUE_TRAVEL) * 0.5 + 0.5;
     col += g * mix(uC1, uC2, k) * (0.62 + 0.5 * k) * exp2(-r * FALLOFF);
   }
-  vec3 x = max(col * GAIN, 0.0);
+  vec3 x = max(col * GAIN * uIntensity, 0.0);
   col = (x * (2.51 * x + 0.03)) / (x * (2.43 * x + 0.59) + 0.14);
   col = pow(clamp(col, 0.0, 1.0), vec3(0.85, 0.92, 0.98));
   col *= 1.0 - smoothstep(0.5, 1.6, length(pos)) * 0.07;
@@ -286,6 +287,7 @@ export function initRibbonGlow(root, props = {}) {
         background = "#FFFFFF",
         color1 = "#FFFFFF",
         color2 = "#0010FF",
+        intensity = 1,
         speed = 50,
         size = 134,
         angle = -180,
@@ -311,6 +313,7 @@ export function initRibbonGlow(root, props = {}) {
         background,
         color1,
         color2,
+        intensity: clampN(num(intensity, 1), 0, 2),
         speed: clampN(num(speed, 50), 0, 100) / 50,
         size: clampN(num(size, 100), 50, 200) / 100,
         angle: (clampN(num(angle, 0), -180, 180) * Math.PI) / 180,
@@ -334,7 +337,7 @@ export function initRibbonGlow(root, props = {}) {
         return null;
     }
 
-    const uf = locations(gl, field, ["uRes", "uTime", "uC1", "uC2", "uSize", "uAngle", "uMouse", "uOn", "uReach", "uVel"]);
+    const uf = locations(gl, field, ["uRes", "uTime", "uC1", "uC2", "uSize", "uAngle", "uMouse", "uOn", "uReach", "uVel", "uIntensity"]);
     const un = locations(gl, finish, ["uField", "uRes", "uTime", "uBg", "uPaper"]);
     const vao = gl.createVertexArray();
     gl.bindVertexArray(vao);
@@ -407,6 +410,7 @@ export function initRibbonGlow(root, props = {}) {
         gl.uniform1f(uf.uOn, on * v.hover);
         gl.uniform1f(uf.uReach, v.reach / ch);
         gl.uniform2f(uf.uVel, (vx / ch) * vCap, (-vy / ch) * vCap);
+        gl.uniform1f(uf.uIntensity, v.intensity);
         gl.drawArrays(gl.TRIANGLES, 0, 3);
 
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);

@@ -5,6 +5,41 @@ let graficoMensal = null;
 Chart.defaults.font.size =
   Number.parseFloat(getComputedStyle(document.documentElement).fontSize) * 0.75;
 
+function atualizarTemaGraficos() {
+  const isDark = document.documentElement.dataset.theme === 'dark';
+  const styles = getComputedStyle(document.documentElement);
+  const color = styles.getPropertyValue('--text').trim();
+  const gridColor = styles.getPropertyValue('--line').trim();
+
+  Chart.defaults.color = color;
+  Chart.defaults.borderColor = gridColor;
+
+  [graficoCategorias, graficoMensal].forEach((grafico) => {
+    if (!grafico) {
+      return;
+    }
+
+    grafico.options.color = color;
+    grafico.options.plugins.legend.labels.color = color;
+    Object.values(grafico.options.scales || {}).forEach((escala) => {
+      escala.ticks.color = color;
+      escala.grid.color = gridColor;
+      escala.border.color = gridColor;
+    });
+
+    if (grafico.config.type === 'pie') {
+      grafico.data.datasets.forEach((dataset) => {
+        dataset.borderColor = isDark ? '#151824' : '#ffffff';
+      });
+    }
+
+    grafico.update('none');
+  });
+}
+
+atualizarTemaGraficos();
+document.addEventListener('planeja:themechange', atualizarTemaGraficos);
+
 // Calcula totais de receitas, despesas e saldo a partir das movimentacoes.
 function calcularResumo(movimentacoes) {
   const receitas = movimentacoes
@@ -180,7 +215,7 @@ function criarGraficoCategorias(dados) {
         {
           data: dados.valores.length ? dados.valores : [1],
           backgroundColor: ['#2563eb', '#16a34a', '#f97316', '#dc2626', '#7c3aed', '#0891b2'],
-          borderColor: '#ffffff',
+          borderColor: document.documentElement.dataset.theme === 'dark' ? '#151824' : '#ffffff',
           borderWidth: 3,
         },
       ],

@@ -52,7 +52,7 @@ function renderMovimentacoes(movimentacoes) {
     const mensagem = movimentacoes.length
       ? 'Nenhuma movimentação encontrada para este filtro.'
       : 'Nenhuma movimentação cadastrada.';
-    movimentacoesLista.innerHTML = `<tr><td class="transactions-empty" colspan="5">${mensagem}</td></tr>`;
+    movimentacoesLista.innerHTML = `<tr><td class="transactions-empty" colspan="4">${mensagem}</td></tr>`;
     return;
   }
 
@@ -60,8 +60,13 @@ function renderMovimentacoes(movimentacoes) {
     .map(
       (movimentacao) => `
         <tr class="movement-row">
-          <td class="transaction-description">${window.AppUtils.escapeHtml(movimentacao.descricao)}</td>
-          <td class="transaction-category">${window.AppUtils.escapeHtml(movimentacao.categoria_nome)}</td>
+          <td class="transaction-description-cell">
+            <span class="transaction-description">${window.AppUtils.escapeHtml(movimentacao.descricao)}</span>
+            <span class="transaction-category">
+              <span class="category-dot" aria-hidden="true"></span>
+              ${window.AppUtils.escapeHtml(movimentacao.categoria_nome || 'Sem categoria')}
+            </span>
+          </td>
           <td class="transaction-date">${window.AppUtils.formatDate(movimentacao.data_movimentacao)}</td>
           <td class="transaction-value ${movimentacao.tipo === 'receita' ? 'positive' : 'negative'}">
             ${window.AppUtils.formatCurrency(movimentacao.valor)}
