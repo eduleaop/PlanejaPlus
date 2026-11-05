@@ -79,7 +79,6 @@
   inset: 0;
   border-radius: 30px;
   background-color: #73c0fc;
-  transition: background-color 0.4s;
 }
 
 .switch .slider::before {
@@ -92,6 +91,13 @@
   border-radius: 20px;
   background-color: #e8e8e8;
   content: "";
+}
+
+:root.theme-ready .switch .slider {
+  transition: background-color 0.4s;
+}
+
+:root.theme-ready .switch .slider::before {
   transition: transform 0.4s;
 }
 
@@ -106,14 +112,12 @@
 .switch .sun svg {
   top: 5px;
   left: 36px;
-  animation: switch-sun-rotate 15s linear infinite;
 }
 
 .switch .moon svg {
   top: 5px;
   left: 5px;
   fill: #73c0fc;
-  animation: switch-moon-tilt 5s linear infinite;
 }
 
 .switch .input:checked + .slider {
@@ -129,35 +133,10 @@
   transform: translateX(30px);
 }
 
-@keyframes switch-sun-rotate {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes switch-moon-tilt {
-  0%, 100% {
-    transform: rotate(0);
-  }
-
-  25% {
-    transform: rotate(-10deg);
-  }
-
-  75% {
-    transform: rotate(10deg);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .switch .slider,
-  .switch .slider::before {
+  :root.theme-ready .switch .slider,
+  :root.theme-ready .switch .slider::before {
     transition: none;
-  }
-
-  .switch .sun svg,
-  .switch .moon svg {
-    animation: none;
   }
 }
 
@@ -694,8 +673,7 @@
     min-width: 520px;
   }
 
-  .dashboard-body .chart-box canvas,
-  .dashboard-body .pie-box canvas {
+  .dashboard-body .chart-box canvas {
     display: block;
     max-width: 100%;
   }

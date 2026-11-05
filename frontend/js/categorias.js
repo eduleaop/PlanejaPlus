@@ -1,24 +1,37 @@
 // Seleciona o formulario e a area onde as categorias serao exibidas.
 const categoriaForm = document.querySelector('#categoria-form');
 const categoriasLista = document.querySelector('#categorias-lista');
+const filtrosCategorias = document.querySelector('.categories-filters');
+let categoriasCache = [];
+let filtroCategoriasAtual = 'todas';
 
 // Renderiza a lista de categorias recebida da API.
 function renderCategorias(categorias) {
+  categoriasCache = categorias;
+  const resultados = categorias.filter(
+    (categoria) => filtroCategoriasAtual === 'todas' || categoria.tipo === filtroCategoriasAtual,
+  );
+
   // Caso o usuario ainda nao tenha categorias, mostra uma mensagem vazia.
-  if (!categorias.length) {
-    categoriasLista.innerHTML = '<p class="empty">Nenhuma categoria cadastrada.</p>';
+  if (!resultados.length) {
+    const mensagem = categorias.length
+      ? 'Nenhuma categoria encontrada para este filtro.'
+      : 'Nenhuma categoria cadastrada.';
+    categoriasLista.innerHTML = `<p class="empty">${mensagem}</p>`;
     return;
   }
 
   // Transforma cada categoria em um bloco HTML de visualizacao.
-  categoriasLista.innerHTML = categorias
+  categoriasLista.innerHTML = resultados
     .map(
       (categoria) => `
         <article class="item">
           <div class="item-header">
             <p class="item-title">${window.AppUtils.escapeHtml(categoria.nome)}</p>
             <span class="tag ${categoria.tipo === 'receita' ? 'success-soft' : 'danger-soft'}">
-              ${window.AppUtils.escapeHtml(categoria.tipo)}
+              ${window.AppUtils.escapeHtml(
+                categoria.tipo.charAt(0).toUpperCase() + categoria.tipo.slice(1),
+              )}
             </span>
           </div>
         </article>
@@ -26,6 +39,22 @@ function renderCategorias(categorias) {
     )
     .join('');
 }
+
+filtrosCategorias.addEventListener('click', (event) => {
+  const botao = event.target.closest('button[data-filtro]');
+
+  if (!botao) {
+    return;
+  }
+
+  filtroCategoriasAtual = botao.dataset.filtro;
+  filtrosCategorias.querySelectorAll('button[data-filtro]').forEach((filtro) => {
+    const ativo = filtro === botao;
+    filtro.classList.toggle('is-active', ativo);
+    filtro.setAttribute('aria-pressed', String(ativo));
+  });
+  renderCategorias(categoriasCache);
+});
 
 // Busca categorias no backend e atualiza a tela.
 async function carregarCategorias() {

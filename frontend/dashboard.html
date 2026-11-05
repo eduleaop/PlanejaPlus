@@ -85,7 +85,7 @@
         </article>
       </section>
 
-      <!-- Area com os graficos criados pela biblioteca Chart.js. -->
+      <!-- Area com os graficos do dashboard. -->
       <section class="content-grid">
         <article class="panel chart-panel">
           <div class="panel-heading">
@@ -95,19 +95,19 @@
             </div>
           </div>
           <div class="chart-box pie-box">
-            <canvas id="grafico-categorias"></canvas>
+            <div id="grafico-categorias" role="img" aria-label="Distribuição das despesas por categoria"></div>
           </div>
         </article>
 
-        <article class="panel chart-panel">
+        <article class="panel chart-panel monthly-chart-panel">
           <div class="panel-heading">
             <div>
-              <h2>Resumo mensal</h2>
+              <h2>Comparativo: Gastos x Renda</h2>
               <p class="muted">Receitas e despesas por mês.</p>
             </div>
           </div>
-          <div class="chart-box">
-            <canvas id="grafico-mensal"></canvas>
+          <div class="chart-box monthly-chart-box">
+            <canvas id="grafico-mensal" role="img" aria-label="Comparativo mensal de renda e gastos"></canvas>
           </div>
         </article>
       </section>
@@ -136,6 +136,7 @@
     <!-- Bibliotecas externas e scripts locais usados pelo dashboard. -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="./js/api-config.js"></script>
     <script src="./js/apiService.js"></script>
     <script src="./js/appUtils.js"></script>

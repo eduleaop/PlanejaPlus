@@ -41,4 +41,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   applyTheme(root.dataset.theme);
+  window.requestAnimationFrame(() => root.classList.add('theme-ready'));
 });

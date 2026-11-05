@@ -69,6 +69,11 @@
         </header>
         <!-- Painel que recebe a lista renderizada pelo JavaScript. -->
         <div class="panel categories-list-panel">
+          <div class="transaction-filters categories-filters" role="group" aria-label="Filtrar categorias">
+            <button class="transaction-filter is-active" type="button" data-filtro="todas" aria-pressed="true">Todas</button>
+            <button class="transaction-filter" type="button" data-filtro="despesa" aria-pressed="false">Despesas</button>
+            <button class="transaction-filter" type="button" data-filtro="receita" aria-pressed="false">Receitas</button>
+          </div>
           <div id="categorias-lista" class="list"></div>
         </div>
       </section>

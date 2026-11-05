@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&display=swap');
 
 :root {
-  font-size: clamp(16px, calc(15px + 0.2vw), 20px);
+  font-size: clamp(15.5px, calc(14.5px + 0.2vw), 19.5px);
 
   /* Variaveis globais para reaproveitar cores, sombra e superficies no projeto. */
   --bg: #f5f4f9;
@@ -1899,10 +1899,21 @@ th {
 }
 
 .reports-filters .button.secondary {
-  grid-column: 1;
   border-color: #b9c8ed;
   background: #fff;
   color: #5875bd;
+}
+
+.reports-export-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 12px;
+  justify-self: center;
+  width: min(100%, 520px);
+}
+
+.reports-export-actions .button {
+  flex: 1;
 }
 
 .reports-filters .button svg {
@@ -2047,6 +2058,10 @@ th {
   .reports-filters {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .reports-export-actions {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 520px) {
@@ -2092,6 +2107,10 @@ th {
   .reports-filters .button.secondary {
     grid-column: 1;
     width: 100%;
+  }
+
+  .reports-export-actions {
+    grid-column: 1;
   }
 
   .reports-stats {
@@ -2184,12 +2203,21 @@ th {
 }
 
 .categories-page .categories-list-panel {
+  display: flex;
+  flex-direction: column;
   min-height: 580px;
   height: 580px;
   padding: 40px 42px;
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
+}
+
+.categories-page .categories-filters {
+  align-self: center;
+  width: fit-content;
+  max-width: 100%;
+  margin-bottom: 20px;
 }
 
 .categories-eyebrow {
@@ -2774,6 +2802,7 @@ th {
 
 .dashboard-body .content-grid {
   gap: 28px;
+  align-items: stretch;
 }
 
 .dashboard-body .chart-panel,
@@ -2790,12 +2819,138 @@ th {
   margin-bottom: 22px;
 }
 
+.dashboard-body .chart-panel .panel-heading h2 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.dashboard-body .chart-panel .panel-heading p {
+  margin-top: 5px;
+  font-size: 0.82rem;
+}
+
+.dashboard-body .monthly-chart-panel {
+  min-height: 430px;
+}
+
+.monthly-chart-box {
+  position: relative;
+  height: 350px;
+}
+
+.monthly-chart-tooltip {
+  position: absolute;
+  z-index: 5;
+  width: max-content;
+  min-width: 210px;
+  max-width: min(260px, calc(100% - 24px));
+  padding: 11px 13px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+  box-shadow: 0 12px 28px rgba(24, 32, 54, 0.16);
+  color: var(--text);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 5px)) scale(0.96);
+  transition:
+    opacity 140ms ease,
+    transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.monthly-chart-tooltip.is-visible {
+  opacity: 1;
+  transform: translate(-50%, -100%) scale(1);
+}
+
+.monthly-chart-tooltip.is-below {
+  transform: translate(-50%, 5px) scale(0.96);
+}
+
+.monthly-chart-tooltip.is-below.is-visible {
+  transform: translate(-50%, 0) scale(1);
+}
+
+.monthly-chart-tooltip-title {
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.monthly-chart-tooltip-rows {
+  display: grid;
+  gap: 7px;
+}
+
+.monthly-chart-tooltip-row {
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr) max-content;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.82rem;
+}
+
+.monthly-chart-tooltip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.monthly-chart-tooltip-dot.is-income {
+  background: #16a34a;
+}
+
+.monthly-chart-tooltip-dot.is-expense {
+  background: #dc2626;
+}
+
+.monthly-chart-tooltip-label {
+  min-width: 0;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.monthly-chart-tooltip-value {
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
 .dashboard-body .chart-box {
   height: 350px;
 }
 
 .dashboard-body .pie-box {
+  position: relative;
   height: 350px;
+}
+
+.dashboard-body .pie-box #grafico-categorias {
+  width: 100%;
+  height: 100%;
+}
+
+.dashboard-body .pie-box #grafico-categorias .apexcharts-svg {
+  background: transparent !important;
+}
+
+.dashboard-body .pie-box #grafico-categorias .apexcharts-datalabels-group {
+  translate: 0 -4px;
+}
+
+.dashboard-body .pie-box #grafico-categorias .apexcharts-datalabel-value {
+  translate: 0 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .monthly-chart-tooltip {
+    transition: none;
+  }
 }
 
 .dashboard-body .ultimas-section {
@@ -2834,6 +2989,7 @@ th {
   .dashboard-body .pie-box {
     height: 320px;
   }
+
 }
 
 @media (max-width: 520px) {
@@ -2856,6 +3012,7 @@ th {
   .dashboard-body .pie-box {
     height: 290px;
   }
+
 }
 
 .faq-page {
