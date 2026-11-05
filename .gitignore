@@ -25,9 +25,6 @@ build/
 **/dist/
 **/build/
 
-# Copia do frontend gerada no build da Vercel (backend/scripts/copy-frontend.js).
-backend/public/
-
 # Relatorios de cobertura de testes.
 coverage/
 **/coverage/
